@@ -18,8 +18,8 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "app_user")
-@Setter
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
@@ -43,6 +43,6 @@ public class User {
     @JoinColumn(name = "address_id", referencedColumnName = "address_id")
     private Address address;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     private Cart cart;
 }
