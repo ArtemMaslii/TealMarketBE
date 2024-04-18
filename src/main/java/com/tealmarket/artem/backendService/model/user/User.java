@@ -1,6 +1,5 @@
 package com.tealmarket.artem.backendService.model.user;
 
-import com.tealmarket.artem.backendService.model.order.Order;
 import com.tealmarket.artem.backendService.model.cart.Cart;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -9,15 +8,20 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
-
-import java.util.Set;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "app_user")
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -41,7 +45,4 @@ public class User {
 
     @OneToOne(mappedBy = "user")
     private Cart cart;
-
-    @OneToMany(mappedBy = "user")
-    private Set<Order> orders;
 }

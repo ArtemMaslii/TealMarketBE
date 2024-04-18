@@ -1,4 +1,4 @@
-package com.tealmarket.artem.backendService.model.user;
+package com.tealmarket.artem.backendService.model.product.details;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,27 +12,18 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "address")
+@Table(name = "storage_space")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Address {
+public class StorageSpace {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "address_id")
+    @Column(name = "storage_id")
     private Long id;
 
-    @Column(name = "country")
-    private String country;
-
-    @Column(name = "city")
-    private String city;
-
-    @Column(name = "street")
-    private String street;
-
-    @Column(name = "post_code")
-    private String postCode;
+    @Column(name = "capacity", nullable = false, unique = true)
+    private String capacity;
 }
