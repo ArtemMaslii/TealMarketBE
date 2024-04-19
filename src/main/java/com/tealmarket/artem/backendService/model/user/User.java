@@ -1,9 +1,12 @@
 package com.tealmarket.artem.backendService.model.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tealmarket.artem.backendService.model.cart.Cart;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -36,8 +39,9 @@ public class User {
     @Column(name = "hash_password", nullable = false, length = 56)
     private String hashPassword;
 
-    @Column(name = "phone_number", length = 20)
-    private String phoneNumber;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_role", nullable = false)
+    private UserRole role;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "address_id")

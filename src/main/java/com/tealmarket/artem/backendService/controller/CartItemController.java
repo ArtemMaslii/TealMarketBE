@@ -1,7 +1,7 @@
 package com.tealmarket.artem.backendService.controller;
 
-import com.tealmarket.artem.backendService.dto.user.ResponseUserDto;
-import com.tealmarket.artem.backendService.service.user.UserService;
+import com.tealmarket.artem.backendService.dto.cartItem.ResponseCartItemDto;
+import com.tealmarket.artem.backendService.service.cartItem.CartItemService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,28 +19,33 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/cartItem")
 @RequiredArgsConstructor
 @Validated
-public class UserController {
+public class CartItemController {
 
-    private final UserService userService;
+    private final CartItemService cartItemService;
+
+    @GetMapping
+    public List<ResponseCartItemDto> getAllCartItems() {
+        return cartItemService.getAllCartItems();
+    }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseUserDto> getUserById(@PathVariable Long id) {
-        Optional<ResponseUserDto> userDto = userService.getUserById(id);
-        return userDto.map(ResponseEntity::ok)
+    public ResponseEntity<ResponseCartItemDto> getCartItemById(@PathVariable Long id) {
+        Optional<ResponseCartItemDto> cartItem = cartItemService.getCartItemById(id);
+        return cartItem.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<ResponseUserDto> registerUser(@Valid @RequestBody ResponseUserDto responseUserDto) {
-        ResponseUserDto userDto = userService.registerUser(responseUserDto);
+    public ResponseEntity<ResponseCartItemDto> orderItem(@Valid @RequestBody ResponseCartItemDto cartItemDto) {
+        ResponseCartItemDto responseCartItemDto = cartItemService.orderItem(cartItemDto);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(userDto.getId())
+                .buildAndExpand(responseCartItemDto.getId())
                 .toUri();
-        return ResponseEntity.created(location).body(userDto);
+        return ResponseEntity.created(location).body(responseCartItemDto);
     }
 }
