@@ -7,9 +7,9 @@ import java.util.Optional;
 
 public interface CartItemService {
 
-    List<ResponseCartItemDto> getAllCartItems();
+    List<ResponseCartItemDto> getOrderedItems(Long id);
 
-    Optional<ResponseCartItemDto> getCartItemById(Long id);
+    Optional<ResponseCartItemDto> orderItem(ResponseCartItemDto item);
 
-    ResponseCartItemDto orderItem(ResponseCartItemDto item);
+    void deleteItemById(Long id);
 }

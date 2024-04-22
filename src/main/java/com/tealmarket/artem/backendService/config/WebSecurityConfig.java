@@ -7,58 +7,49 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-    private static final String ALLOWED_ORIGIN = System.getProperty("ALLOWED_ORIGIN", "http://tealmarket-website.s3-website.eu-north-1.amazonaws.com");
-    private static final List<String> ALLOWED_METHODS = List.of("GET", "POST", "PATCH", "DELETE");
-
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .cors(cors -> cors.configurationSource(corsFilter()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                        .requestMatchers(HttpMethod.POST, "/api/v1/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/v1/cartItem/**").hasRole("USER")
-                        .requestMatchers("/api/v1/user/**").hasRole("USER")
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/**").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/api/v1/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(formLogin -> formLogin
-                        .loginPage(ALLOWED_ORIGIN + "/login").permitAll())
+                        .loginProcessingUrl("http://localhost:3000/login").permitAll())
                 .logout(logout -> logout
-                        .logoutUrl(ALLOWED_ORIGIN + "/login").permitAll());
+                        .logoutUrl("http://localhost:3000/logout").permitAll());
 
         return http.build();
     }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
+    public CorsConfigurationSource corsFilter() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(Collections.singletonList(ALLOWED_ORIGIN));
-        configureCommonCORS(corsConfiguration);
-        return buildCorsConfigurationSource(corsConfiguration);
-    }
+        corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000"));
+        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE"));
+        corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        corsConfiguration.setAllowCredentials(true);
 
-    private void configureCommonCORS(CorsConfiguration configuration) {
-        configuration.setAllowedMethods(ALLOWED_METHODS);
-        configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
-        configuration.setAllowCredentials(true);
-    }
-
-    private CorsConfigurationSource buildCorsConfigurationSource(CorsConfiguration configuration) {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/api/v1/**", configuration);
+        source.registerCorsConfiguration("/api/v1/**", corsConfiguration);
+
         return source;
     }
 

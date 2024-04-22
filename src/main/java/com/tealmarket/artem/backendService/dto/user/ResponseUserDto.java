@@ -1,6 +1,7 @@
 package com.tealmarket.artem.backendService.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tealmarket.artem.backendService.dto.cartItem.ResponseCartDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,12 +13,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ResponseUserDto {
 
-    @JsonIgnore
     private Long id;
+
+    private String username;
 
     private String email;
 
-    private String hashPassword;
+    private String password;
 
     private ResponseAddressDto address;
+
+    private ResponseCartDto cart;
 }

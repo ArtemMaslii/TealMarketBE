@@ -32,12 +32,15 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
+    @Column(name = "username", nullable = false, length = 50)
+    private String username;
+
     @Email
     @Column(name = "email", nullable = false, length = 100)
     private String email;
 
-    @Column(name = "hash_password", nullable = false, length = 56)
-    private String hashPassword;
+    @Column(name = "hash_password", nullable = false)
+    private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "user_role", nullable = false)

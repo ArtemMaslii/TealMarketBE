@@ -5,6 +5,7 @@ import com.tealmarket.artem.backendService.service.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,9 +27,14 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ResponseProductDto> getProductById(@PathVariable Long id) {
-        Optional<ResponseProductDto> product = productService.getProductById(id);
+    @GetMapping("/{brandName}")
+    public List<ResponseProductDto> getAllProductsByCompanyName(@PathVariable String brandName) {
+        return productService.getAllProductsByCompanyName(brandName);
+    }
+
+    @GetMapping("/{brandName}/{id}")
+    public ResponseEntity<ResponseProductDto> getProductById(@PathVariable String brandName, @PathVariable Long id) {
+        Optional<ResponseProductDto> product = productService.getProductById(id, brandName);
         return product.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }

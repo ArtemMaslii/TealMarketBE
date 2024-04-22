@@ -27,8 +27,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Optional<ResponseProductDto> getProductById(Long id) {
-        return productRepository.findById(id)
+    public List<ResponseProductDto> getAllProductsByCompanyName(String brandName) {
+        return productRepository.findAllByNameContainingIgnoreCase(brandName).stream()
+                .map(PRODUCT_MAPPER::productToResponseProductDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<ResponseProductDto> getProductById(Long id, String brandName) {
+        return productRepository.findByIdAndNameContainingIgnoreCase(id, brandName)
                 .map(PRODUCT_MAPPER::productToResponseProductDto);
     }
 }

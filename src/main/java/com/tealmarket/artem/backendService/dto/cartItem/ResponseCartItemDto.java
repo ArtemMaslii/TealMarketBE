@@ -10,14 +10,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class ResponseCartItemDto {
 
-    @JsonIgnore
     private Long id;
 
     private ResponseCartDto cart;
@@ -26,5 +27,5 @@ public class ResponseCartItemDto {
 
     private ResponseColorDto color;
 
-    private ResponseStorageSpaceDto storageSpace;
+    private ResponseStorageSpaceDto storage;
 }

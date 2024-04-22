@@ -9,5 +9,7 @@ public interface ProductService {
 
     List<ResponseProductDto> getAllProducts();
 
-    Optional<ResponseProductDto> getProductById(Long id);
+    List<ResponseProductDto> getAllProductsByCompanyName(String brandName);
+
+    Optional<ResponseProductDto> getProductById(Long id, String brandName);
 }
