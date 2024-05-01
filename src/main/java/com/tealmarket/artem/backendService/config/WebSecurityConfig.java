@@ -32,9 +32,9 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, "/api/v1/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(formLogin -> formLogin
-                        .loginProcessingUrl("http://localhost:3000/login").permitAll())
+                        .loginProcessingUrl("http://tealmarket-real-prototype.s3-website.eu-north-1.amazonaws.com/login").permitAll())
                 .logout(logout -> logout
-                        .logoutUrl("http://localhost:3000/logout").permitAll());
+                        .logoutUrl("http://tealmarket-real-prototype.s3-website.eu-north-1.amazonaws.com/logout").permitAll());
 
         return http.build();
     }
@@ -42,7 +42,7 @@ public class WebSecurityConfig {
     @Bean
     public CorsConfigurationSource corsFilter() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000"));
+        corsConfiguration.setAllowedOrigins(List.of("http://tealmarket-real-prototype.s3-website.eu-north-1.amazonaws.com", "http://localhost:3000"));
         corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE"));
         corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
         corsConfiguration.setAllowCredentials(true);

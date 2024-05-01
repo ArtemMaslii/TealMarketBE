@@ -17,6 +17,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/v1/product")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://tealmarket-real-prototype.s3-website.eu-north-1.amazonaws.com")
 @Validated
 public class ProductController {
 

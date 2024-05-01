@@ -35,8 +35,3 @@ out/
 
 ### VS Code ###
 .vscode/
-
-### DB Properties ###
-src/main/resources/application.properties
-
-compose.yaml
